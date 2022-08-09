@@ -9,25 +9,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const portfinder = require('portfinder');
 const config = require('./config/index.js');
 
-const devWebpackConfig = merge(common, {
-  mode: 'development',
+const prodWebpackConfig = merge(common, {
+  mode: 'production',
   output: {
-    filename: '[name].js',
-    publicPath: config.dev.publicPath,
-  },
-  devServer: {
-    // contentBase: path.join(__dirname, '..', './dist/'),
-    contentBase: false,
-    historyApiFallback: false,
-    hot: true,
-    quiet: true,
-    // 出现错误时，在浏览器中显示全屏覆盖层
-    overlay: {
-      warnings: false,
-      errors: true,
-    },
-    host: config.dev.host,
-    port: config.dev.port,
+    filename: '[name].[chunkhash].js',
+    publicPath: config.build.publicPath,
+    path: config.build.path
   },
   module: {
     rules: [
@@ -52,7 +39,7 @@ const devWebpackConfig = merge(common, {
     new HtmlWebpackPlugin({
       inject: 'body',
       scriptLoading: 'blocking',
-      filename: path.join(__dirname, `../dist/index.html`),
+      filename: path.join(__dirname, `../example/index.html`),
       template: path.join(__dirname, '../index.html'),
       // entry: name,
       //需要引入的js
@@ -72,22 +59,5 @@ const devWebpackConfig = merge(common, {
   ],
 });
 
-module.exports = new Promise((reslove, reject) => {
-  portfinder.basePort = config.dev.port;
-  portfinder.getPort((err, port) => {
-    if (err) {
-    } else {
-      devWebpackConfig.plugins.push(
-        new FriendlyErrorsPlugin({
-          compilationSuccessInfo: {
-            messages: [
-              `您的应用运行成功: http://${config.dev.host}:${config.dev.port}`,
-            ],
-          },
-        })
-      );
-    }
 
-    reslove(devWebpackConfig);
-  });
-});
+module.exports = prodWebpackConfig;

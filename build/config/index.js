@@ -10,7 +10,7 @@ module.exports = {
   },
   build: {
     //表示输出到dist目录
-    path: path.resolve(__dirname, '../../dist'),
+    path: path.resolve(__dirname, '../../example'),
     //如果是目录大于二级,必须设置'/'
     publicPath: './',
   },

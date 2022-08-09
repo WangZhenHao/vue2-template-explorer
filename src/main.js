@@ -1,6 +1,6 @@
 import './style.css';
 import theme from './theme';
-import { compileToFunctions } from './vue-template-compiler/browser.js'
+import { compileToFunctions, generateCodeFrame, compile } from './vue-template-compiler/browser.js'
 
 const debounce = function (fn, wait = 300) {
   var timer = null;
@@ -35,8 +35,9 @@ window.init = () => {
   monaco.editor.setTheme('my-theme');
 
   const editor = monaco.editor.create(document.getElementById('source'), {
-    value: `<div>
-    <div>Hello World!111111</div> 
+    value: `<div v-if="a">
+    <div>Hello World!</div> 
+    <div>Hello World!</div>
 </div>`,
     language: 'html',
     ...sharedEditorOptions,
@@ -69,6 +70,7 @@ window.init = () => {
 
     try {
       const res = compileToFunctions(src)
+      // console.log(compile(src), generateCodeFrame(src))
       let fn = ''
       if(res.staticRenderFns.length) {
         fn = res.staticRenderFns[0]
