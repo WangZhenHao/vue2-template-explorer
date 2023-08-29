@@ -1,6 +1,9 @@
 import './style.css';
 import theme from './theme';
-import { compileToFunctions, generateCodeFrame, compile } from './vue-template-compiler/browser.js'
+import { compileToFunctions } from './vue-template-compiler/browser.js'
+import prettier from 'prettier/standalone'
+import prettierPluginBabel from 'prettier/plugins/babel'
+import prettierPluginEstree from 'prettier/plugins/estree'
 
 const debounce = function (fn, wait = 300) {
   var timer = null;
@@ -40,8 +43,9 @@ window.init = () => {
     <div>Hello World!</div>
 </div>`,
     language: 'html',
-    ...sharedEditorOptions,
     wordWrap: 'bounded',
+    /* eslint-disable */
+    ...sharedEditorOptions,
   });
 
   editor.getModel().updateOptions({
@@ -77,10 +81,17 @@ window.init = () => {
       } else {
         fn = res.render
       }
-
+      
       // console.log(String(fn))
       if(fn) {
-        output.setValue(fn.toString())
+        prettier.format(fn.toString(), 
+        {
+          parser: "babel",
+          plugins: [prettierPluginBabel, prettierPluginEstree],
+        }).then(res => {
+          output.setValue(res)
+        })
+        
       }
 
     } catch (error) {
@@ -93,4 +104,8 @@ window.init = () => {
 
   editor.onDidChangeModelContent(debounce(reCompile))
   reCompile()
+
+ 
+
 };
+
