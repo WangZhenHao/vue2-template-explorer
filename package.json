@@ -48,6 +48,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "monaco-editor": "^0.20.0",
     "prettier": "^3.0.2"
   }
 }

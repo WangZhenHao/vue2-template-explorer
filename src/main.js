@@ -1,9 +1,14 @@
 import './style.css';
+import 'monaco-editor/min/vs/editor/editor.main.css'
+
 import theme from './theme';
 import { compileToFunctions } from './vue-template-compiler/browser.js'
 import prettier from 'prettier/standalone'
 import prettierPluginBabel from 'prettier/plugins/babel'
 import prettierPluginEstree from 'prettier/plugins/estree'
+
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.main.js';
+
 
 const debounce = function (fn, wait = 300) {
   var timer = null;
@@ -31,8 +36,8 @@ const sharedEditorOptions = {
 
 // console.log(compileToFunctions(`<div v-if="a==1"><div>Hello World!111111</div><div>Hello World!111111</div></div>`))
 
-window.init = () => {
-  const monaco = window.monaco;
+// window.init = () => {
+  // const monaco = window.monaco;
 
   monaco.editor.defineTheme('my-theme', theme);
   monaco.editor.setTheme('my-theme');
@@ -107,5 +112,5 @@ window.init = () => {
 
  
 
-};
+// };
 
